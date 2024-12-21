@@ -1,0 +1,2012 @@
+<html><head><base href="/">
+<title>AI-OS - AsDevStudio</title>
+<style>
+:root {
+  --neon-blue: #00f3ff;
+  --neon-purple: #8a2be2;
+  --dark-bg: #0a0a15;
+  --neon-blue-glow: 0 0 10px #00f3ff, 0 0 20px #00f3ff, 0 0 30px #00f3ff;
+  --neon-purple-glow: 0 0 10px #8a2be2, 0 0 20px #8a2be2, 0 0 30px #8a2be2;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Orbitron', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--dark-bg);
+  color: var(--neon-blue);
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--dark-bg);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--neon-blue);
+}
+
+.loading-logo {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 30px;
+  animation: rotateLogo 3s linear infinite;
+}
+
+@keyframes rotateLogo {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-bar-container {
+  width: 300px;
+  height: 20px;
+  background: rgba(138, 43, 226, 0.1);
+  border: 2px solid var(--neon-purple);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.loading-bar {
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+  transition: width 0.5s ease;
+}
+
+.loading-text {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.loading-status {
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+  color: var(--neon-purple);
+  text-align: left;
+  width: 300px;
+  height: 150px;
+  overflow: hidden;
+}
+
+.blink {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.os-container {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+}
+
+.logo-container {
+  text-align: center;
+  padding: 20px;
+  animation: pulse 2s infinite;
+}
+
+.logo {
+  width: 200px;
+  height: 200px;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.menu-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.category-button {
+  background: rgba(138, 43, 226, 0.1);
+  border: 2px solid var(--neon-purple);
+  border-radius: 10px;
+  padding: 20px;
+  margin: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(138, 43, 226, 0.2),
+              0 0 10px var(--neon-purple);
+}
+
+.category-button:hover {
+  background: rgba(138, 43, 226, 0.3);
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4),
+              0 0 20px var(--neon-purple),
+              0 0 40px var(--neon-purple);
+  text-shadow: 0 0 5px var(--neon-purple),
+               0 0 10px var(--neon-purple);
+}
+
+.category-icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 0 5px var(--neon-blue))
+          drop-shadow(0 0 10px var(--neon-blue));
+  animation: iconPulse 2s infinite;
+}
+
+@keyframes iconPulse {
+  0% { 
+    filter: drop-shadow(0 0 5px var(--neon-blue))
+            drop-shadow(0 0 10px var(--neon-blue));
+  }
+  50% { 
+    filter: drop-shadow(0 0 10px var(--neon-blue))
+            drop-shadow(0 0 20px var(--neon-blue));
+  }
+  100% { 
+    filter: drop-shadow(0 0 5px var(--neon-blue))
+            drop-shadow(0 0 10px var(--neon-blue));
+  }
+}
+
+.menu {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.menu-item {
+  background: rgba(138, 43, 226, 0.1);
+  border: 2px solid var(--neon-purple);
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--neon-blue);
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0, 243, 255, 0.2),
+              0 0 10px var(--neon-blue);
+}
+
+.menu-item:hover {
+  background: rgba(138, 43, 226, 0.3);
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 243, 255, 0.4),
+              0 0 20px var(--neon-blue),
+              0 0 40px var(--neon-blue);
+  text-shadow: 0 0 5px var(--neon-blue),
+               0 0 10px var(--neon-blue);
+}
+
+.menu-item::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 12px;
+  background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.menu-item:hover::before {
+  opacity: 0.5;
+}
+
+.menu-item h3 {
+  margin-bottom: 10px;
+}
+
+.menu-item p {
+  font-size: 0.9em;
+  opacity: 0.8;
+}
+
+.alert {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px;
+  border-radius: 5px;
+  background: rgba(0, 243, 255, 0.1);
+  border: 1px solid var(--neon-blue);
+  color: var(--neon-blue);
+  display: none;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.status-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(10, 10, 21, 0.9);
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--neon-purple);
+  box-shadow: 0 -5px 15px rgba(138, 43, 226, 0.2);
+}
+
+.help-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.benefit-card {
+  background: rgba(138, 43, 226, 0.1);
+  border: 2px solid var(--neon-purple);
+  border-radius: 10px;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.benefit-card:hover {
+  background: rgba(138, 43, 226, 0.2);
+  transform: translateY(-5px);
+  box-shadow: 0 0 15px var(--neon-purple);
+}
+
+.benefit-card h3 {
+  color: var(--neon-blue);
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.benefit-card ul {
+  list-style-type: none;
+}
+
+.benefit-card ul li {
+  margin: 10px 0;
+  padding-left: 20px;
+  position: relative;
+}
+
+.benefit-card ul li:before {
+  content: "•";
+  color: var(--neon-purple);
+  position: absolute;
+  left: 0;
+}
+
+.loading-logo text,
+.logo text {
+  font-size: 32px; /* Increased font size */
+  font-weight: 700; /* Bolder text */
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 2px; /* Add letter spacing */
+  text-transform: uppercase; /* Make text uppercase */
+  fill: var(--neon-blue);
+  filter: drop-shadow(0 0 2px var(--neon-blue))
+         drop-shadow(0 0 4px var(--neon-blue))
+         drop-shadow(0 0 6px var(--neon-blue));
+  animation: textGlow 2s ease-in-out infinite alternate;
+}
+
+/* Add new animation for the glowing text effect */
+@keyframes textGlow {
+  from {
+    filter: drop-shadow(0 0 2px var(--neon-blue))
+           drop-shadow(0 0 4px var(--neon-blue))
+           drop-shadow(0 0 6px var(--neon-blue));
+  }
+  to {
+    filter: drop-shadow(0 0 4px var(--neon-blue))
+           drop-shadow(0 0 8px var(--neon-blue))
+           drop-shadow(0 0 12px var(--neon-blue));
+  }
+}
+
+/* Update the SVG circle styling */
+.loading-logo circle,
+.logo circle {
+  filter: drop-shadow(0 0 4px var(--neon-purple));
+  animation: circleGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes circleGlow {
+  from {
+    filter: drop-shadow(0 0 4px var(--neon-purple));
+  }
+  to {
+    filter: drop-shadow(0 0 8px var(--neon-purple));
+  }
+}
+
+/* Update the SVG path styling */
+.loading-logo path,
+.logo path {
+  filter: drop-shadow(0 0 3px var(--neon-blue));
+}
+
+/* Add styles for favorite icons */
+.favorite-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: var(--neon-purple);
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.favorite-icon.active {
+  color: var(--neon-blue);
+  text-shadow: 0 0 5px var(--neon-blue),
+               0 0 10px var(--neon-blue),
+               0 0 15px var(--neon-blue);
+}
+
+.empty-favorites {
+  text-align: center;
+  padding: 20px;
+  color: var(--neon-purple);
+  font-style: italic;
+}
+
+.control-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 1000px;
+  height: 80vh;
+  background: rgba(10, 10, 21, 0.95);
+  border: 2px solid var(--neon-purple);
+  border-radius: 15px;
+  padding: 20px;
+  z-index: 1000;
+  display: none;
+  box-shadow: 0 0 20px var(--neon-purple);
+  overflow-y: auto;
+}
+
+.control-panel.active {
+  display: block;
+}
+
+.control-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--neon-blue);
+}
+
+.close-panel {
+  color: var(--neon-blue);
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.close-panel:hover {
+  color: var(--neon-purple);
+  text-shadow: 0 0 10px var(--neon-purple);
+}
+
+.control-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.control-tab {
+  padding: 10px 20px;
+  background: rgba(138, 43, 226, 0.1);
+  border: 1px solid var(--neon-purple);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.control-tab.active {
+  background: rgba(138, 43, 226, 0.3);
+  box-shadow: 0 0 10px var(--neon-purple);
+}
+
+.control-content {
+  padding: 20px;
+  background: rgba(10, 10, 21, 0.5);
+  border-radius: 10px;
+}
+
+.control-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.control-input {
+  padding: 10px;
+  background: rgba(138, 43, 226, 0.1);
+  border: 1px solid var(--neon-blue);
+  border-radius: 5px;
+  color: var(--neon-blue);
+}
+
+.control-button {
+  padding: 10px 20px;
+  background: rgba(138, 43, 226, 0.2);
+  border: 1px solid var(--neon-purple);
+  border-radius: 5px;
+  color: var(--neon-blue);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.control-button:hover {
+  background: rgba(138, 43, 226, 0.4);
+  box-shadow: 0 0 10px var(--neon-purple);
+}
+
+.control-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.control-item {
+  padding: 10px;
+  background: rgba(138, 43, 226, 0.1);
+  border: 1px solid var(--neon-blue);
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.edit-button, .delete-button {
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.edit-button {
+  background: rgba(0, 243, 255, 0.2);
+  border: 1px solid var(--neon-blue);
+}
+
+.delete-button {
+  background: rgba(255, 0, 0, 0.2);
+  border: 1px solid #ff0000;
+  color: #ff0000;
+}
+
+.footer-credit {
+  text-align: center;
+  padding: 10px;
+  color: var(--neon-purple);
+  font-size: 0.8em;
+  border-top: 1px solid var(--neon-blue);
+  margin-top: 20px;
+}
+
+.info-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--dark-bg);
+  border: 2px solid var(--neon-purple);
+  border-radius: 10px;
+  padding: 20px;
+  z-index: 2000;
+  max-width: 400px;
+  box-shadow: 0 0 20px var(--neon-purple);
+  display: none;
+}
+
+.info-popup.active {
+  display: block;
+}
+
+.info-popup h3 {
+  color: var(--neon-blue);
+  margin-bottom: 15px;
+}
+
+.info-popup p {
+  color: var(--neon-purple);
+  margin-bottom: 20px;
+}
+
+.info-popup button {
+  background: rgba(138, 43, 226, 0.2);
+  border: 1px solid var(--neon-purple);
+  color: var(--neon-blue);
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.info-popup button:hover {
+  background: rgba(138, 43, 226, 0.4);
+  box-shadow: 0 0 10px var(--neon-purple);
+}
+</style>
+</head>
+<body>
+<div class="loading-screen">
+  <svg class="loading-logo" viewBox="0 0 200 200">
+    <defs>
+      <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:var(--neon-blue);stop-opacity:1"/>
+        <stop offset="100%" style="stop-color:var(--neon-purple);stop-opacity:1"/>
+      </linearGradient>
+    </defs>
+    <circle cx="100" cy="100" r="90" fill="none" stroke="url(#grad2)" stroke-width="4"/>
+    <text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="var(--neon-blue)" style="font-size: 32px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; filter: drop-shadow(0 0 2px var(--neon-blue)) drop-shadow(0 0 4px var(--neon-blue)) drop-shadow(0 0 6px var(--neon-blue)); animation: textGlow 2s ease-in-out infinite alternate;">AI-OS</text>
+  </svg>
+  <div class="loading-bar-container">
+    <div class="loading-bar"></div>
+  </div>
+  <div class="loading-text">Initializing AI-OS<span class="blink">...</span></div>
+  <div class="loading-status"></div>
+</div>
+
+<div class="os-container">
+  <div class="logo-container">
+    <svg class="logo" viewBox="0 0 200 200">
+      <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:var(--neon-blue);stop-opacity:1"/>
+          <stop offset="100%" style="stop-color:var(--neon-purple);stop-opacity:1"/>
+        </linearGradient>
+      </defs>
+      <circle cx="100" cy="100" r="90" fill="none" stroke="url(#grad1)" stroke-width="4"/>
+      <text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="var(--neon-blue)" style="font-size: 32px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; filter: drop-shadow(0 0 2px var(--neon-blue)) drop-shadow(0 0 4px var(--neon-blue)) drop-shadow(0 0 6px var(--neon-blue)); animation: textGlow 2s ease-in-out infinite alternate;">AI-OS</text>
+      <path d="M100,20 A80,80 0 0,1 100,180" stroke="var(--neon-purple)" fill="none" stroke-width="2" stroke-dasharray="10,5" style="filter: drop-shadow(0 0 3px var(--neon-blue));"/>
+    </svg>
+  </div>
+
+  <div class="category-grid">
+    <div class="category-button" data-category="ai-tools">
+      <svg class="category-icon" viewBox="0 0 24 24">
+        <path fill="var(--neon-blue)" d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6"/>
+      </svg>
+      <h3>AI Tools &amp; Platforms</h3>
+    </div>
+    
+    <div class="category-button" data-category="ai-dev">
+      <svg class="category-icon" viewBox="0 0 24 24">
+        <path fill="var(--neon-purple)" d="M14.6,16.6L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27L12,17.27Z"/>
+      </svg>
+      <h3>AI Development</h3>
+    </div>
+
+    <div class="category-button" data-category="backend">
+      <svg class="category-icon" viewBox="0 0 24 24">
+        <path fill="var(--neon-blue)" d="M4,1H20A1,1 0 0,1 21,2V6A1,1 0 0,1 20,7H4A1,1 0 0,1 3,6V2A1,1 0 0,1 4,1M4,9H20A1,1 0 0,1 21,10V14A1,1 0 0,1 20,15H4A1,1 0 0,1 3,14V10A1,1 0 0,1 4,9M4,17H20A1,1 0 0,1 21,18V22A1,1 0 0,1 20,23H4A1,1 0 0,1 3,22V18A1,1 0 0,1 4,17Z"/>
+      </svg>
+      <h3>Backend &amp; Database</h3>
+    </div>
+
+    <div class="category-button" data-category="media">
+      <svg class="category-icon" viewBox="0 0 24 24">
+        <path fill="var(--neon-purple)" d="M17,10.5V7A1,1 0 0,0 16,6H4A1,1 0 0,0 3,7V17A1,1 0 0,0 4,18H16A1,1 0 0,0 17,17V13.5L21,17.5V6.5L17,10.5Z"/>
+      </svg>
+      <h3>Media Creation</h3>
+    </div>
+
+    <div class="category-button" data-category="hosting">
+      <svg class="category-icon" viewBox="0 0 24 24">
+        <path fill="var(--neon-blue)" d="M4,1H20A1,1 0 0,1 21,2V6A1,1 0 0,1 20,7H4A1,1 0 0,1 3,6V2A1,1 0 0,1 4,1M4,9H20A1,1 0 0,1 21,10V14A1,1 0 0,1 20,15H4A1,1 0 0,1 3,14V10A1,1 0 0,1 4,9M4,17H20A1,1 0 0,1 21,18V22A1,1 0 0,1 20,23H4A1,1 0 0,1 3,22V18A1,1 0 0,1 4,17Z"/>
+      </svg>
+      <h3>Hosting &amp; Domains</h3>
+    </div>
+
+    <div class="category-button" data-category="seo">
+      <svg class="category-icon" viewBox="0 0 24 24">
+        <path fill="var(--neon-blue)" d="M11,6H13V13H11V6M9,20A1,1 0 0,1 8,21H5A1,1 0 0,1 4,20V15L2,13.5V11.5L4,10V4A1,1 0 0,1 5,3H8A1,1 0 0,1 9,4V20M19,20A1,1 0 0,1 18,21H15A1,1 0 0,1 14,20V4A1,1 0 0,1 15,3H18A1,1 0 0,1 19,4V20Z"/>
+      </svg>
+      <h3>SEO Tools</h3>
+    </div>
+    
+    <div class="category-button" data-category="social">
+      <svg class="category-icon" viewBox="0 0 24 24">
+        <path fill="var(--neon-blue)" d="M16,3L12,0L8,3H16M16,21L12,24L8,21H16Z"/>
+      </svg>
+      <h3>Social Media</h3>
+    </div>
+
+    <div class="category-button" data-category="email">
+      <svg class="category-icon" viewBox="0 0 24 24">
+        <path fill="var(--neon-purple)" d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z"/>
+      </svg>
+      <h3>Email Services</h3>
+    </div>
+    
+    <div class="category-button" data-category="browsers">
+      <svg class="category-icon" viewBox="0 0 24 24">
+        <path fill="var(--neon-blue)" d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2m0,18c-4.41,0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-12c-1.1,0-2,0.9-2,2s0.9,2 2,2 2-0.9 2-2-0.9-2-2-2z"/>
+      </svg>
+      <h3>Web Browsers</h3>
+    </div>
+    
+    <div class="category-button" data-category="emulators">
+      <svg class="category-icon" viewBox="0 0 24 24">
+        <path fill="var(--neon-purple)" d="M21,3H3C1.9,3 1,3.9 1,5V19A2,2 0 0,0 3,21H21A2,2 0 0,0 23,19V5C23,3.9 22.1,3 21,3M21,19H3V5H21V19M16,3L12,0L8,3H16M16,21L12,24L8,21H16Z"/>
+      </svg>
+      <h3>Emulators</h3>
+    </div>
+
+    <div class="category-button" data-category="google">
+      <svg class="category-icon" viewBox="0 0 24 24">
+        <path fill="var(--neon-blue)" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/>
+      </svg>
+      <h3>Google Services</h3>
+    </div>
+
+    <div class="category-button" data-category="api-keys">
+      <svg class="category-icon" viewBox="0 0 24 24">
+        <path fill="var(--neon-blue)" d="M7,14A2,2 0 0,1 5,12A2,2 0 0,1 7,10A2,2 0 0,1 9,12A2,2 0 0,1 7,14M12.65,10C11.83,7.67 9.61,6 7,6A6,6 0 0,0 1,12A6,6 0 0,0 7,18C9.61,18 11.83,16.33 12.65,14H17V18H21V14H23V10H12.65Z"/>
+      </svg>
+      <h3>API Keys</h3>
+    </div>
+
+    <div class="category-button" data-category="forex">
+      <svg class="category-icon" viewBox="0 0 24 24">
+        <path fill="var(--neon-blue)" d="M21,18V19H3V18H21M3,7H21V8H3V7M3,13H21V14H3V13M16,3L12,0L8,3H16M16,21L12,24L8,21H16Z"/>
+      </svg>
+      <h3>Forex Bot Tools</h3>
+    </div>
+
+    <!-- New Favorites category button -->
+    <div class="category-button" data-category="favorites">
+      <svg class="category-icon" viewBox="0 0 24 24">
+        <path fill="var(--neon-blue)" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/>
+      </svg>
+      <h3>Favorites</h3>
+    </div>
+  </div>
+
+  <div class="menu-container">
+    <div class="menu-section">
+      <h2>AI Tools &amp; Platforms</h2>
+      <div class="menu">
+        <a href="https://chat.openai.com" class="menu-item">
+          <h3>ChatGPT</h3>
+          <p>OpenAI&apos;s Language Model</p>
+        </a>
+        
+        <a href="https://gemini.google.com" class="menu-item">
+          <h3>Gemini 2.0</h3>
+          <p>Google&apos;s Advanced AI Model</p>
+        </a>
+        
+        <a href="https://www.midjourney.com" class="menu-item">
+          <h3>Midjourney</h3>
+          <p>AI Image Generation</p>
+        </a>
+        
+        <a href="https://www.anthropic.com/claude" class="menu-item">
+          <h3>Claude</h3>
+          <p>Anthropic&apos;s AI Assistant</p>
+        </a>
+        
+        <a href="https://gemini.google.com" class="menu-item">
+          <h3>Bard</h3>
+          <p>Google&apos;s AI Model</p>
+        </a>
+        
+        <a href="https://www.bing.com/chat" class="menu-item">
+          <h3>Bing Chat</h3>
+          <p>Microsoft&apos;s AI Chat</p>
+        </a>
+        
+        <a href="https://stability.ai" class="menu-item">
+          <h3>Stable Diffusion</h3>
+          <p>Open-Source Image Generation</p>
+        </a>
+        
+        <a href="https://www.copy.ai" class="menu-item">
+          <h3>Copy.ai</h3>
+          <p>AI Content Writing</p>
+        </a>
+        
+        <a href="https://www.jasper.ai" class="menu-item">
+          <h3>Jasper</h3>
+          <p>AI Content Assistant</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="menu-section">
+      <h2>AI Development Platforms</h2>
+      <div class="menu">
+        <a href="https://websim.ai" class="menu-item">
+          <h3>Websim.ai</h3>
+          <p>AI-Powered Web Development</p>
+        </a>
+
+        <a href="https://www.builder.io" class="menu-item">
+          <h3>Builder.io</h3>
+          <p>AI-Powered Site Builder</p>
+        </a>
+
+        <a href="https://bolt.new" class="menu-item">
+          <h3>Bolt</h3>
+          <p>AI Development Assistant</p>
+        </a>
+
+        <a href="https://www.cursor.so" class="menu-item">
+          <h3>Cursor</h3>
+          <p>AI-Powered Code Editor</p>
+        </a>
+
+        <a href="https://makersuite.google.com" class="menu-item">
+          <h3>Google AI Studio</h3>
+          <p>AI Model Development Platform</p>
+        </a>
+
+        <a href="https://www.framer.com" class="menu-item">
+          <h3>Framer</h3>
+          <p>AI Website Creation</p>
+        </a>
+
+        <a href="https://www.dora.run" class="menu-item">
+          <h3>Dora</h3>
+          <p>AI App Development</p>
+        </a>
+
+        <a href="https://www.appypie.com" class="menu-item">
+          <h3>Appy Pie</h3>
+          <p>No-Code AI App Builder</p>
+        </a>
+
+        <a href="https://www.bubble.io" class="menu-item">
+          <h3>Bubble</h3>
+          <p>Visual Programming Platform</p>
+        </a>
+
+        <a href="https://www.wix.com/ai" class="menu-item">
+          <h3>Wix AI</h3>
+          <p>AI Website Builder</p>
+        </a>
+
+        <a href="https://www.10web.io" class="menu-item">
+          <h3>10Web</h3>
+          <p>AI Website Automation</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="menu-section">
+      <h2>Backend &amp; Database Platforms</h2>
+      <div class="menu">
+        <a href="https://supabase.com" class="menu-item">
+          <h3>Supabase</h3>
+          <p>Open Source Firebase Alternative</p>
+        </a>
+
+        <a href="https://www.mongodb.com/atlas" class="menu-item">
+          <h3>MongoDB Atlas</h3>
+          <p>Cloud Document Database</p>
+        </a>
+
+        <a href="https://firebase.google.com" class="menu-item">
+          <h3>Firebase</h3>
+          <p>Google&apos;s Backend Platform</p>
+        </a>
+
+        <a href="https://www.planetscale.com" class="menu-item">
+          <h3>PlanetScale</h3>
+          <p>Serverless MySQL Platform</p>
+        </a>
+
+        <a href="https://www.cockroachlabs.com" class="menu-item">
+          <h3>CockroachDB</h3>
+          <p>Distributed SQL Database</p>
+        </a>
+
+        <a href="https://www.fauna.com" class="menu-item">
+          <h3>Fauna</h3>
+          <p>Serverless Database</p>
+        </a>
+
+        <a href="https://appwrite.io" class="menu-item">
+          <h3>Appwrite</h3>
+          <p>Open Source Backend Server</p>
+        </a>
+
+        <a href="https://pocketbase.io" class="menu-item">
+          <h3>PocketBase</h3>
+          <p>Open Source Backend</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="menu-section" id="media">
+      <h2>AI Media Creation</h2>
+      <div class="menu">
+        <a href="https://www.descript.com" class="menu-item">
+          <h3>Descript</h3>
+          <p>AI Video &amp; Audio Editor</p>
+        </a>
+
+        <a href="https://www.synthesia.io" class="menu-item">
+          <h3>Synthesia</h3>
+          <p>AI Video Generation</p>
+        </a>
+
+        <a href="https://www.runway.ml" class="menu-item">
+          <h3>Runway</h3>
+          <p>AI Video Editing</p>
+        </a>
+
+        <a href="https://www.murf.ai" class="menu-item">
+          <h3>Murf</h3>
+          <p>AI Voice Generation</p>
+        </a>
+
+        <a href="https://www.elevenlabs.io" class="menu-item">
+          <h3>ElevenLabs</h3>
+          <p>AI Voice Synthesis</p>
+        </a>
+
+        <a href="https://www.soundraw.io" class="menu-item">
+          <h3>Soundraw</h3>
+          <p>AI Music Generation</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="menu-section" id="hosting">
+      <h2>Hosting &amp; Domains</h2>
+      <div class="menu">
+        <a href="https://vercel.com" class="menu-item">
+          <h3>Vercel</h3>
+          <p>Frontend Deployment &amp; Hosting</p>
+        </a>
+
+        <a href="https://www.netlify.com" class="menu-item">
+          <h3>Netlify</h3>
+          <p>Web Hosting &amp; Automation</p>
+        </a>
+
+        <a href="https://pages.github.com" class="menu-item">
+          <h3>GitHub Pages</h3>
+          <p>Free Static Site Hosting</p>
+        </a>
+
+        <a href="https://www.cloudflare.com" class="menu-item">
+          <h3>Cloudflare</h3>
+          <p>CDN &amp; Security</p>
+        </a>
+
+        <a href="https://www.heroku.com" class="menu-item">
+          <h3>Heroku</h3>
+          <p>Cloud Application Platform</p>
+        </a>
+
+        <a href="https://www.digitalocean.com" class="menu-item">
+          <h3>DigitalOcean</h3>
+          <p>Cloud Infrastructure</p>
+        </a>
+
+        <a href="https://www.namecheap.com" class="menu-item">
+          <h3>Namecheap</h3>
+          <p>Domain Registration &amp; Hosting</p>
+        </a>
+
+        <a href="https://cloudinary.com" class="menu-item">
+          <h3>Cloudinary</h3>
+          <p>Media Management</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="menu-section" id="seo">
+      <h2>SEO Tools &amp; Platforms</h2>
+      <div class="menu">
+        <a href="https://ahrefs.com" class="menu-item">
+          <h3>Ahrefs</h3>
+          <p>SEO Tools &amp; Resources</p>
+        </a>
+
+        <a href="https://moz.com" class="menu-item">
+          <h3>Moz Pro</h3>
+          <p>SEO Software &amp; Data</p>
+        </a>
+
+        <a href="https://www.semrush.com" class="menu-item">
+          <h3>SEMrush</h3>
+          <p>Marketing &amp; SEO Platform</p>
+        </a>
+
+        <a href="https://search.google.com/search-console" class="menu-item">
+          <h3>Google Search Console</h3>
+          <p>Website Performance &amp; SEO</p>
+        </a>
+
+        <a href="https://www.screamingfrog.co.uk/seo-spider" class="menu-item">
+          <h3>Screaming Frog</h3>
+          <p>SEO Spider Tool</p>
+        </a>
+
+        <a href="https://ubersuggest.com" class="menu-item">
+          <h3>Ubersuggest</h3>
+          <p>Free SEO Tools</p>
+        </a>
+
+        <a href="https://www.spyfu.com" class="menu-item">
+          <h3>SpyFu</h3>
+          <p>Competitor SEO Analysis</p>
+        </a>
+
+        <a href="https://answerthepublic.com" class="menu-item">
+          <h3>Answer The Public</h3>
+          <p>Search Intent Tool</p>
+        </a>
+
+        <a href="https://www.siteliner.com" class="menu-item">
+          <h3>Siteliner</h3>
+          <p>Site Analysis Tool</p>
+        </a>
+      </div>
+    </div>
+    
+    <div class="menu-section" id="help">
+      <h2>Welcome to AI-OS</h2>
+      <div class="help-content">
+        <div class="benefit-card">
+          <h3>For Developers &amp; Programmers</h3>
+          <ul>
+            <li>Access to cutting-edge AI development tools and platforms</li>
+            <li>Streamlined workflow with AI-powered coding assistants</li>
+            <li>Comprehensive collection of backend and database solutions</li>
+            <li>Integration options with modern AI APIs and services</li>
+          </ul>
+        </div>
+
+        <div class="benefit-card">
+          <h3>For Digital Creators</h3>
+          <ul>
+            <li>Advanced AI tools for content generation and editing</li>
+            <li>Professional-grade media creation platforms</li>
+            <li>Automated content optimization and enhancement</li>
+            <li>Efficient workflow solutions for creative projects</li>
+          </ul>
+        </div>
+
+        <div class="benefit-card">
+          <h3>For Businesses</h3>
+          <ul>
+            <li>Cost-effective AI solutions for various business needs</li>
+            <li>Scalable hosting and infrastructure options</li>
+            <li>Comprehensive SEO and marketing tools</li>
+            <li>Professional-grade AI-powered automation</li>
+          </ul>
+        </div>
+
+        <div class="benefit-card">
+          <h3>Why AI-OS?</h3>
+          <ul>
+            <li>Centralized hub for all AI-powered development tools</li>
+            <li>Carefully curated selection of reliable platforms</li>
+            <li>Regular updates with latest AI technologies</li>
+            <li>Free and premium options for every need</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-section" id="social">
+      <h2>Social Media &amp; Developer Platforms</h2>
+      <div class="menu">
+        <a href="https://github.com" class="menu-item">
+          <h3>GitHub</h3>
+          <p>Code Hosting &amp; Collaboration</p>
+        </a>
+
+        <a href="https://linkedin.com" class="menu-item">
+          <h3>LinkedIn</h3>
+          <p>Professional Networking</p>
+        </a>
+
+        <a href="https://twitter.com" class="menu-item">
+          <h3>Twitter/X</h3>
+          <p>Social Networking</p>
+        </a>
+
+        <a href="https://facebook.com" class="menu-item">
+          <h3>Facebook</h3>
+          <p>Social Network Platform</p>
+        </a>
+
+        <a href="https://instagram.com" class="menu-item">
+          <h3>Instagram</h3>
+          <p>Photo &amp; Video Sharing</p>
+        </a>
+
+        <a href="https://youtube.com" class="menu-item">
+          <h3>YouTube</h3>
+          <p>Video Platform</p>
+        </a>
+
+        <a href="https://discord.com" class="menu-item">
+          <h3>Discord</h3>
+          <p>Community Chat Platform</p>
+        </a>
+
+        <a href="https://reddit.com" class="menu-item">
+          <h3>Reddit</h3>
+          <p>Community &amp; Discussion</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="menu-section" id="email">
+      <h2>Email Service Providers</h2>
+      <div class="menu">
+        <a href="https://gmail.com" class="menu-item">
+          <h3>Gmail</h3>
+          <p>Google Email Service</p>
+        </a>
+
+        <a href="https://outlook.com" class="menu-item">
+          <h3>Outlook</h3>
+          <p>Microsoft Email Platform</p>
+        </a>
+
+        <a href="https://proton.me" class="menu-item">
+          <h3>ProtonMail</h3>
+          <p>Secure Email Service</p>
+        </a>
+
+        <a href="https://yahoo.com/mail" class="menu-item">
+          <h3>Yahoo Mail</h3>
+          <p>Yahoo Email Platform</p>
+        </a>
+
+        <a href="https://zoho.com/mail" class="menu-item">
+          <h3>Zoho Mail</h3>
+          <p>Business Email Service</p>
+        </a>
+
+        <a href="https://tutanota.com" class="menu-item">
+          <h3>Tutanota</h3>
+          <p>Encrypted Email Service</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="menu-section" id="browsers">
+      <h2>Web Browsers</h2>
+      <div class="menu">
+        <a href="https://www.google.com/chrome" class="menu-item">
+          <h3>Google Chrome</h3>
+          <p>Fast &amp; Secure Browser</p>
+        </a>
+
+        <a href="https://www.mozilla.org/firefox" class="menu-item">
+          <h3>Firefox</h3>
+          <p>Privacy-Focused Browser</p>
+        </a>
+
+        <a href="https://www.microsoft.com/edge" class="menu-item">
+          <h3>Microsoft Edge</h3>
+          <p>AI-Powered Browser</p>
+        </a>
+
+        <a href="https://brave.com" class="menu-item">
+          <h3>Brave</h3>
+          <p>Privacy &amp; Crypto Browser</p>
+        </a>
+
+        <a href="https://www.opera.com" class="menu-item">
+          <h3>Opera</h3>
+          <p>Feature-Rich Browser</p>
+        </a>
+
+        <a href="https://www.opera.com/gx" class="menu-item">
+          <h3>Opera GX</h3>
+          <p>Gaming Browser</p>
+        </a>
+
+        <a href="https://vivaldi.com" class="menu-item">
+          <h3>Vivaldi</h3>
+          <p>Customizable Browser</p>
+        </a>
+
+        <a href="https://www.torproject.org" class="menu-item">
+          <h3>Tor Browser</h3>
+          <p>Anonymous Browsing</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="menu-section" id="emulators">
+      <h2>Development Emulators</h2>
+      <div class="menu">
+        <a href="https://developer.android.com/studio" class="menu-item">
+          <h3>Android Studio</h3>
+          <p>Official Android Emulator</p>
+        </a>
+
+        <a href="https://www.genymotion.com/" class="menu-item">
+          <h3>Genymotion</h3>
+          <p>Android Emulator for Developers</p>
+        </a>
+
+        <a href="https://developer.apple.com/xcode/" class="menu-item">
+          <h3>Xcode iOS Simulator</h3>
+          <p>iOS Device Simulator</p>
+        </a>
+
+        <a href="https://www.bluestacks.com/" class="menu-item">
+          <h3>BlueStacks</h3>
+          <p>Android Gaming Emulator</p>
+        </a>
+
+        <a href="https://www.noxplayer.com/" class="menu-item">
+          <h3>NoxPlayer</h3>
+          <p>Android Emulator</p>
+        </a>
+
+        <a href="https://www.ldplayer.net/" class="menu-item">
+          <h3>LDPlayer</h3>
+          <p>Android Gaming Emulator</p>
+        </a>
+
+        <a href="https://www.memuplay.com/" class="menu-item">
+          <h3>MEmu</h3>
+          <p>Android Emulator</p>
+        </a>
+
+        <a href="https://www.bignox.com/" class="menu-item">
+          <h3>Nox App Player</h3>
+          <p>Android Gaming Platform</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="menu-section" id="google">
+      <h2>Google Services</h2>
+      <div class="menu">
+        <a href="https://www.google.com/adsense" class="menu-item">
+          <h3>Google AdSense</h3>
+          <p>Website Monetization</p>
+        </a>
+
+        <a href="https://ads.google.com" class="menu-item">
+          <h3>Google Ads</h3>
+          <p>Online Advertising</p>
+        </a>
+
+        <a href="https://play.google.com" class="menu-item">
+          <h3>Google Play Store</h3>
+          <p>App Marketplace</p>
+        </a>
+
+        <a href="https://drive.google.com" class="menu-item">
+          <h3>Google Drive</h3>
+          <p>Cloud Storage</p>
+        </a>
+
+        <a href="https://workspace.google.com" class="menu-item">
+          <h3>Google Workspace</h3>
+          <p>Business Applications</p>
+        </a>
+
+        <a href="https://analytics.google.com" class="menu-item">
+          <h3>Google Analytics</h3>
+          <p>Website Analytics</p>
+        </a>
+
+        <a href="https://domains.google.com" class="menu-item">
+          <h3>Google Domains</h3>
+          <p>Domain Registration</p>
+        </a>
+
+        <a href="https://cloud.google.com" class="menu-item">
+          <h3>Google Cloud</h3>
+          <p>Cloud Computing Platform</p>
+        </a>
+
+        <a href="https://photos.google.com" class="menu-item">
+          <h3>Google Photos</h3>
+          <p>Photo Storage &amp; Sharing</p>
+        </a>
+
+        <a href="https://calendar.google.com" class="menu-item">
+          <h3>Google Calendar</h3>
+          <p>Schedule Management</p>
+        </a>
+
+        <a href="https://maps.google.com" class="menu-item">
+          <h3>Google Maps</h3>
+          <p>Navigation &amp; Location Services</p>
+        </a>
+
+        <a href="https://meet.google.com" class="menu-item">
+          <h3>Google Meet</h3>
+          <p>Video Conferencing</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="menu-section" id="api-keys">
+      <h2>Free APIs &amp; Developer Keys</h2>
+      <div class="menu">
+        <a href="https://rapidapi.com/hub" class="menu-item">
+          <h3>RapidAPI</h3>
+          <p>Free Public APIs Hub</p>
+        </a>
+
+        <a href="https://developers.google.com/maps" class="menu-item">
+          <h3>Google Maps API</h3>
+          <p>Free Tier Available</p>
+        </a>
+
+        <a href="https://openweathermap.org/api" class="menu-item">
+          <h3>OpenWeather API</h3>
+          <p>Free Weather Data</p>
+        </a>
+
+        <a href="https://developer.themoviedb.org/docs" class="menu-item">
+          <h3>TMDb API</h3>
+          <p>Free Movie Database</p>
+        </a>
+
+        <a href="https://developers.giphy.com/" class="menu-item">
+          <h3>Giphy API</h3>
+          <p>Free GIF Database</p>
+        </a>
+
+        <a href="https://newsapi.org/" class="menu-item">
+          <h3>News API</h3>
+          <p>Free News Data</p>
+        </a>
+
+        <a href="https://api.nasa.gov/" class="menu-item">
+          <h3>NASA API</h3>
+          <p>Free Space Data</p>
+        </a>
+
+        <a href="https://developers.google.com/youtube" class="menu-item">
+          <h3>YouTube API</h3>
+          <p>Free Video Platform API</p>
+        </a>
+
+        <a href="https://platform.openai.com/" class="menu-item">
+          <h3>OpenAI API</h3>
+          <p>AI Models (Free Trial)</p>
+        </a>
+
+        <a href="https://www.cloudflare.com/products/workers/" class="menu-item">
+          <h3>Cloudflare Workers</h3>
+          <p>Free Serverless Computing</p>
+        </a>
+
+        <a href="https://developers.google.com/custom-search" class="menu-item">
+          <h3>Google Custom Search</h3>
+          <p>Free Search API</p>
+        </a>
+
+        <a href="https://www.twilio.com/docs/usage/api" class="menu-item">
+          <h3>Twilio API</h3>
+          <p>Free Trial Communication API</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="menu-section" id="forex">
+      <h2>Forex Trading Bot Platforms</h2>
+      <div class="menu">
+        <a href="https://www.metatrader4.com/en" class="menu-item">
+          <h3>MetaTrader 4</h3>
+          <p>Popular Trading Platform with MQL4</p>
+        </a>
+
+        <a href="https://www.metatrader5.com/en" class="menu-item">
+          <h3>MetaTrader 5</h3>
+          <p>Advanced Trading Platform with MQL5</p>
+        </a>
+
+        <a href="https://www.quantconnect.com" class="menu-item">
+          <h3>QuantConnect</h3>
+          <p>Algorithmic Trading Platform</p>
+        </a>
+
+        <a href="https://www.tradingview.com/pine-script-docs" class="menu-item">
+          <h3>TradingView Pine Script</h3>
+          <p>Custom Indicator Development</p>
+        </a>
+
+        <a href="https://www.myfxbook.com" class="menu-item">
+          <h3>FX Codebase</h3>
+          <p>Trading Algorithms &amp; Tools</p>
+        </a>
+
+        <a href="https://www.forexfactory.com" class="menu-item">
+          <h3>Forex Factory</h3>
+          <p>Trading Community &amp; Resources</p>
+        </a>
+
+        <a href="https://www.mql5.com" class="menu-item">
+          <h3>MQL5 Community</h3>
+          <p>Trading Bot Marketplace</p>
+        </a>
+
+        <a href="https://www.zorro-trader.com" class="menu-item">
+          <h3>Zorro Trading Automation</h3>
+          <p>Algo Trading Development</p>
+        </a>
+
+        <a href="https://www.cryptohopper.com" class="menu-item">
+          <h3>Cryptohopper</h3>
+          <p>Automated Trading Platform</p>
+        </a>
+
+        <a href="https://www.freqtrade.io" class="menu-item">
+          <h3>Freqtrade</h3>
+          <p>Open Source Trading Bot</p>
+        </a>
+      </div>
+    </div>
+
+    <!-- New Favorites menu section -->
+    <div class="menu-section" id="favorites">
+      <h2>Favorite Links</h2>
+      <div class="menu" id="favorites-menu">
+        <!-- Favorites will be dynamically added here -->
+        <div class="empty-favorites">
+          <p>No favorites yet. Click the star icon on any link to add it to favorites.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert" id="alert"></div>
+  
+  <div class="status-bar">
+    <span id="date-time"></span>
+    <span id="system-status">System Status: Operational</span>
+    <button class="control-button" id="open-control-panel">Control Panel</button>
+  </div>
+</div>
+
+<div class="control-panel">
+  <div class="control-panel-header">
+    <h2>Control Panel</h2>
+    <span class="close-panel">&#xd7;</span>
+  </div>
+  
+  <div class="control-tabs">
+    <div class="control-tab active" data-tab="categories">Categories</div>
+    <div class="control-tab" data-tab="links">Links</div>
+  </div>
+  
+  <div class="control-content">
+    <div class="control-section" id="categories-section">
+      <div class="control-form">
+        <input type="text" class="control-input" id="category-name" placeholder="Category Name">
+        <input type="text" class="control-input" id="category-icon" placeholder="Category Icon (SVG path)">
+        <button class="control-button" id="add-category">Add Category</button>
+      </div>
+      <div class="control-list" id="categories-list">
+        <!-- Categories will be listed here -->
+      </div>
+    </div>
+    
+    <div class="control-section" id="links-section" style="display: none;">
+      <div class="control-form">
+        <input type="text" class="control-input" id="link-title" placeholder="Link Title">
+        <input type="text" class="control-input" id="link-url" placeholder="Link URL">
+        <input type="text" class="control-input" id="link-description" placeholder="Link Description">
+        <select class="control-input" id="link-category">
+          <!-- Categories will be populated here -->
+        </select>
+        <button class="control-button" id="add-link">Add Link</button>
+      </div>
+      <div class="control-list" id="links-list">
+        <!-- Links will be listed here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer-credit">
+  Created By ASdevStudio 2024
+</div>
+
+<div class="info-popup" id="category-info">
+  <h3>Adding New Categories</h3>
+  <p>You can add new categories with or without an icon. If you don't want to add an icon, simply leave the icon field empty. The category will be created with just the title.</p>
+  <button onclick="closeInfoPopup()">Got it!</button>
+</div>
+
+<script>
+const userAddedItems = {
+  categories: [],
+  links: []
+};
+function loadUserAddedItems() {
+  const saved = localStorage.getItem('userAddedItems');
+  if (saved) {
+    Object.assign(userAddedItems, JSON.parse(saved));
+  }
+}
+function saveUserAddedItems() {
+  localStorage.setItem('userAddedItems', JSON.stringify(userAddedItems));
+}
+function updateDateTime() {
+  const dateTimeElement = document.getElementById('date-time');
+  const now = new Date();
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  };
+  dateTimeElement.textContent = now.toLocaleDateString('en-US', options);
+}
+function showAlert(message) {
+  const alert = document.getElementById('alert');
+  alert.textContent = message;
+  alert.style.display = 'block';
+  setTimeout(() => {
+    alert.style.display = 'none';
+  }, 3000);
+}
+function simulateLoading() {
+  const loadingScreen = document.querySelector('.loading-screen');
+  const loadingBar = document.querySelector('.loading-bar');
+  const loadingStatus = document.querySelector('.loading-status');
+  const mainContent = document.querySelector('.os-container');
+  mainContent.style.display = 'none';
+  const statusMessages = ["Initializing system core...", "Loading AI modules...", "Establishing neural connections...", "Calibrating quantum processors...", "Loading user interface...", "Optimizing system performance...", "Establishing secure connections...", "Running system diagnostics...", "Synchronizing data streams...", "Activating AI protocols..."];
+  let progress = 0;
+  let messageIndex = 0;
+  const updateProgress = () => {
+    if (progress <= 100) {
+      loadingBar.style.width = `${progress}%`;
+      if (progress % 10 === 0 && messageIndex < statusMessages.length) {
+        loadingStatus.innerHTML += `${statusMessages[messageIndex]}<br>`;
+        messageIndex++;
+        loadingStatus.scrollTop = loadingStatus.scrollHeight;
+      }
+      progress += 2;
+      setTimeout(updateProgress, 100);
+    } else {
+      setTimeout(() => {
+        loadingScreen.style.opacity = '0';
+        loadingScreen.style.transition = 'opacity 0.5s ease';
+        mainContent.style.display = 'grid';
+        setTimeout(() => {
+          loadingScreen.remove();
+        }, 500);
+      }, 500);
+    }
+  };
+  updateProgress();
+}
+function openControlPanel() {
+  document.querySelector('.control-panel').classList.add('active');
+  loadControlPanelData();
+}
+function closeControlPanel() {
+  document.querySelector('.control-panel').classList.remove('active');
+}
+function loadControlPanelData() {
+  loadCategories();
+  loadLinks();
+  
+  // Get and clear the category select element
+  const categorySelect = document.getElementById('link-category');
+  categorySelect.innerHTML = '';
+  
+  // Add default categories
+  const defaultCategories = [
+    {value: 'ai-tools', label: 'AI Tools & Platforms'},
+    {value: 'ai-dev', label: 'AI Development'},
+    {value: 'backend', label: 'Backend & Database'},
+    {value: 'media', label: 'Media Creation'},
+    {value: 'hosting', label: 'Hosting & Domains'},
+    {value: 'seo', label: 'SEO Tools'},
+    {value: 'social', label: 'Social Media'},
+    {value: 'email', label: 'Email Services'},
+    {value: 'browsers', label: 'Web Browsers'},
+    {value: 'emulators', label: 'Emulators'},
+    {value: 'google', label: 'Google Services'},
+    {value: 'api-keys', label: 'API Keys'},
+    {value: 'forex', label: 'Forex Tools'},
+    {value: 'favorites', label: 'Favorites'}
+  ];
+  
+  // Add a default "Select Category" option
+  const defaultOption = document.createElement('option');
+  defaultOption.value = '';
+  defaultOption.textContent = '-- Select Category --';
+  defaultOption.disabled = true;
+  defaultOption.selected = true;
+  categorySelect.appendChild(defaultOption);
+  
+  // Add all default categories
+  defaultCategories.forEach(category => {
+    const option = document.createElement('option');
+    option.value = category.value;
+    option.textContent = category.label;
+    categorySelect.appendChild(option);
+  });
+  
+  // Add user-created categories
+  if (userAddedItems.categories && userAddedItems.categories.length > 0) {
+    // Add a separator
+    const separator = document.createElement('option');
+    separator.disabled = true;
+    separator.textContent = '──────────────';
+    categorySelect.appendChild(separator);
+    
+    // Add user categories
+    userAddedItems.categories.forEach(category => {
+      const option = document.createElement('option');
+      option.value = category.name.toLowerCase().replace(/\s+/g, '-');
+      option.textContent = category.name;
+      categorySelect.appendChild(option);
+    });
+  }
+}
+
+function addLink(title, url, description, category) {
+  if (!category) {
+    showAlert('Please select a category');
+    return;
+  }
+  
+  const newLink = {
+    title,
+    url, 
+    description,
+    category,
+    id: Date.now()
+  };
+  
+  userAddedItems.links.push(newLink);
+  saveUserAddedItems();
+  
+  // Find the correct menu section 
+  let menuSection;
+  const categoryId = category.toLowerCase().replace(/\s+/g, '-');
+  
+  // First try to find existing menu section
+  menuSection = document.querySelector(`#${categoryId} .menu`);
+  
+  // If no menu section exists, create one for user-added categories
+  if (!menuSection && userAddedItems.categories.some(c => c.name.toLowerCase().replace(/\s+/g, '-') === categoryId)) {
+    const menuContainer = document.querySelector('.menu-container');
+    const newSection = document.createElement('div');
+    newSection.className = 'menu-section';
+    newSection.id = categoryId;
+    newSection.innerHTML = `
+      <h2>${category}</h2>
+      <div class="menu"></div>
+    `;
+    menuContainer.appendChild(newSection);
+    menuSection = newSection.querySelector('.menu');
+  }
+
+  if (menuSection) {
+    const linkElement = document.createElement('a'); 
+    linkElement.className = 'menu-item';
+    linkElement.href = url;
+    linkElement.innerHTML = `
+      <h3>${title}</h3>
+      <p>${description}</p>
+      <span class="favorite-icon">★</span>
+    `;
+    menuSection.appendChild(linkElement);
+    
+    // Add favorite functionality
+    const favoriteIcon = linkElement.querySelector('.favorite-icon');
+    favoriteIcon.addEventListener('click', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      // toggleFavorite(linkElement, {
+      //   href: url,
+      //   title: title,
+      //   description: description
+      // });
+    });
+    
+    // Clear form inputs
+    document.getElementById('link-title').value = '';
+    document.getElementById('link-url').value = '';
+    document.getElementById('link-description').value = '';
+    document.getElementById('link-category').selectedIndex = 0;
+    
+    showAlert('Link added successfully!');
+  } else {
+    showAlert('Error: Category not found');
+  }
+  
+  loadLinks();
+}
+
+function loadLinks() {
+  const linksList = document.getElementById('links-list');
+  linksList.innerHTML = '';
+  userAddedItems.links.forEach((link, index) => {
+    const div = document.createElement('div');
+    div.className = 'control-item';
+    div.innerHTML = `
+      <span>${link.title}</span>
+      <div>
+        <button class="edit-button" onclick="editLink(${index})">Edit</button>
+        <button class="delete-button" onclick="deleteLink(${index})">Delete</button>
+      </div>
+    `;
+    linksList.appendChild(div);
+  });
+}
+
+function deleteLink(index) {
+  const link = userAddedItems.links[index];
+  
+  // Try to find the link element in the DOM
+  const linkElement = document.querySelector(`[href="${link.url}"]`);
+  
+  // Only attempt to remove if the element exists
+  if (linkElement) {
+    linkElement.remove();
+  }
+
+  // Remove from userAddedItems array
+  userAddedItems.links.splice(index, 1);
+  saveUserAddedItems();
+  loadLinks();
+  
+  // Show success message
+  showAlert('Link deleted successfully!');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  simulateLoading();
+  document.querySelector('.menu-section').classList.add('active');
+  let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+  document.querySelectorAll('.menu-item').forEach(item => {
+    const favoriteIcon = document.createElement('span');
+    favoriteIcon.innerHTML = '★';
+    favoriteIcon.className = 'favorite-icon';
+    if (favorites.some(f => f.href === item.href)) {
+      favoriteIcon.classList.add('active');
+    }
+    favoriteIcon.addEventListener('click', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      const itemData = {
+        href: item.href,
+        title: item.querySelector('h3').textContent,
+        description: item.querySelector('p').textContent
+      };
+      if (favorites.some(f => f.href === itemData.href)) {
+        favorites = favorites.filter(f => f.href !== itemData.href);
+        favoriteIcon.classList.remove('active');
+        showAlert('Removed from favorites');
+      } else {
+        favorites.push(itemData);
+        favoriteIcon.classList.add('active');
+        showAlert('Added to favorites');
+      }
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+      updateFavoritesMenu();
+    });
+    item.appendChild(favoriteIcon);
+  });
+  function updateFavoritesMenu() {
+    const favoritesMenu = document.getElementById('favorites-menu');
+    favoritesMenu.innerHTML = '';
+    if (favorites.length === 0) {
+      favoritesMenu.innerHTML = `
+        <div class="empty-favorites">
+          <p>No favorites yet. Click the star icon on any link to add it to favorites.</p>
+        </div>
+      `;
+      return;
+    }
+    favorites.forEach(fav => {
+      const favItem = document.createElement('a');
+      favItem.href = fav.href;
+      favItem.className = 'menu-item';
+      favItem.innerHTML = `
+        <h3>${fav.title}</h3>
+        <p>${fav.description}</p>
+        <span class="favorite-icon active">★</span>
+      `;
+      favItem.querySelector('.favorite-icon').addEventListener('click', e => {
+        e.preventDefault();
+        e.stopPropagation();
+        favorites = favorites.filter(f => f.href !== fav.href);
+        favoriteIcon.classList.remove('active');
+        showAlert('Removed from favorites');
+      });
+      favoritesMenu.appendChild(favItem);
+    });
+  }
+  updateFavoritesMenu();
+  document.querySelectorAll('.category-button').forEach(button => {
+    button.addEventListener('click', () => {
+      document.querySelectorAll('.menu-section').forEach(section => {
+        section.classList.remove('active');
+      });
+      const category = button.getAttribute('data-category');
+      let sectionToShow;
+      switch (category) {
+        case 'ai-tools':
+          sectionToShow = document.querySelector('.menu-section:nth-of-type(1)');
+          break;
+        case 'ai-dev':
+          sectionToShow = document.querySelector('.menu-section:nth-of-type(2)');
+          break;
+        case 'backend':
+          sectionToShow = document.querySelector('.menu-section:nth-of-type(3)');
+          break;
+        case 'media':
+          sectionToShow = document.querySelector('#media');
+          break;
+        case 'hosting':
+          sectionToShow = document.querySelector('#hosting');
+          break;
+        case 'seo':
+          sectionToShow = document.querySelector('#seo');
+          break;
+        case 'help':
+          sectionToShow = document.querySelector('#help');
+          break;
+        case 'social':
+          sectionToShow = document.querySelector('#social');
+          break;
+        case 'email':
+          sectionToShow = document.querySelector('#email');
+          break;
+        case 'browsers':
+          sectionToShow = document.querySelector('#browsers');
+          break;
+        case 'emulators':
+          sectionToShow = document.querySelector('#emulators');
+          break;
+        case 'google':
+          sectionToShow = document.querySelector('#google');
+          break;
+        case 'api-keys':
+          sectionToShow = document.querySelector('#api-keys');
+          break;
+        case 'forex':
+          sectionToShow = document.querySelector('#forex');
+          break;
+        case 'favorites':
+          sectionToShow = document.querySelector('#favorites');
+          break;
+      }
+      if (sectionToShow) {
+        sectionToShow.classList.add('active');
+        const yOffset = -20;
+        const y = sectionToShow.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({
+          top: y,
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+  updateDateTime();
+  setInterval(updateDateTime, 1000);
+  document.querySelectorAll('.menu-item').forEach(item => {
+    item.addEventListener('click', () => {
+      showAlert(`Launching ${item.querySelector('h3').textContent}...`);
+    });
+  });
+  setInterval(() => {
+    const status = document.getElementById('system-status');
+    const randomNum = Math.random();
+    if (randomNum > 0.95) {
+      status.textContent = 'System Status: Optimizing...';
+      setTimeout(() => {
+        status.textContent = 'System Status: Operational';
+      }, 2000);
+    }
+  }, 5000);
+  document.getElementById('open-control-panel').addEventListener('click', openControlPanel);
+  document.querySelector('.close-panel').addEventListener('click', closeControlPanel);
+  document.querySelectorAll('.control-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.control-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const section = tab.getAttribute('data-tab');
+      document.querySelectorAll('.control-section').forEach(s => s.style.display = 'none');
+      document.getElementById(`${section}-section`).style.display = 'block';
+    });
+  });
+  document.getElementById('add-category').addEventListener('click', () => {
+    const name = document.getElementById('category-name').value;
+    const icon = document.getElementById('category-icon').value;
+    if (name && icon) {
+      addCategory(name, icon);
+      document.getElementById('category-name').value = '';
+      document.getElementById('category-icon').value = '';
+    }
+  });
+  document.getElementById('add-link').addEventListener('click', () => {
+    const title = document.getElementById('link-title').value;
+    const url = document.getElementById('link-url').value;
+    const description = document.getElementById('link-description').value;
+    const category = document.getElementById('link-category').value;
+    if (title && url && description && category) {
+      addLink(title, url, description, category);
+      document.getElementById('link-title').value = '';
+      document.getElementById('link-url').value = '';
+      document.getElementById('link-description').value = '';
+    }
+  });
+  loadUserAddedItems();
+});
+
+function addCategory(name, iconPath = null) {
+  const newCategory = {
+    name,
+    iconPath,
+    id: Date.now()
+  };
+  userAddedItems.categories.push(newCategory);
+  saveUserAddedItems();
+  
+  const categoryGrid = document.querySelector('.category-grid');
+  const categoryButton = document.createElement('div');
+  categoryButton.className = 'category-button';
+  categoryButton.setAttribute('data-category', name.toLowerCase().replace(/\s+/g, '-'));
+  
+  // Create button content based on whether an icon was provided
+  categoryButton.innerHTML = iconPath ? `
+    <svg class="category-icon" viewBox="0 0 24 24">
+      <path fill="var(--neon-blue)" d="${iconPath}"/>
+    </svg>
+    <h3>${name}</h3>
+  ` : `<h3>${name}</h3>`;
+  
+  categoryGrid.appendChild(categoryButton);
+  
+  const menuContainer = document.querySelector('.menu-container');
+  const menuSection = document.createElement('div');
+  menuSection.className = 'menu-section';
+  menuSection.id = name.toLowerCase().replace(/\s+/g, '-');
+  menuSection.innerHTML = `
+    <h2>${name}</h2>
+    <div class="menu"></div>
+  `;
+  menuContainer.appendChild(menuSection);
+  
+  loadCategories();
+  showAlert('Category added successfully!');
+}
+
+function loadCategories() {
+  const categoriesList = document.getElementById('categories-list');
+  categoriesList.innerHTML = '';
+  
+  userAddedItems.categories.forEach((category, index) => {
+    const div = document.createElement('div');
+    div.className = 'control-item';
+    div.innerHTML = `
+      <span>${category.name}</span>
+      <div>
+        <button class="edit-button" onclick="editCategory(${index})">Edit</button>
+        <button class="delete-button" onclick="deleteCategory(${index})">Delete</button>
+      </div>
+    `;
+    categoriesList.appendChild(div);
+  });
+}
+
+function editCategory(index) {
+  const category = userAddedItems.categories[index];
+  document.getElementById('category-name').value = category.name;
+  document.getElementById('category-icon').value = category.iconPath || '';
+  const addButton = document.getElementById('add-category');
+  addButton.textContent = 'Update Category';
+  addButton.onclick = () => {
+    const name = document.getElementById('category-name').value;
+    const iconPath = document.getElementById('category-icon').value;
+    category.name = name;
+    category.iconPath = iconPath;
+    saveUserAddedItems();
+    loadCategories();
+    document.getElementById('category-name').value = '';
+    document.getElementById('category-icon').value = '';
+    addButton.textContent = 'Add Category';
+    addButton.onclick = () => addCategory(document.getElementById('category-name').value, document.getElementById('category-icon').value);
+  };
+}
+
+function deleteCategory(index) {
+  const category = userAddedItems.categories[index];
+  
+  // Only attempt to remove DOM elements if they exist
+  const categoryButton = document.querySelector(`[data-category="${category.name.toLowerCase().replace(/\s+/g, '-')}"]`);
+  if (categoryButton) {
+    categoryButton.remove();
+  }
+  
+  const menuSection = document.getElementById(category.name.toLowerCase().replace(/\s+/g, '-'));
+  if (menuSection) {
+    menuSection.remove();
+  }
+  
+  // Remove from userAddedItems array
+  userAddedItems.categories.splice(index, 1);
+  saveUserAddedItems();
+  loadCategories();
+  
+  // Show success message
+  showAlert('Category deleted successfully!');
+}
+
+function showCategoryInfo() {
+  document.getElementById('category-info').classList.add('active');
+}
+
+function closeInfoPopup() {
+  document.getElementById('category-info').classList.remove('active');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  showCategoryInfo();
+});
+
+function editLink(index) {
+  
+}
+
+function deleteLink(index) {
+  
+}
+</script>
+</body></html>
